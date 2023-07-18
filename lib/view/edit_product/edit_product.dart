@@ -16,14 +16,16 @@ class EditProduct extends StatelessWidget {
   final String image;
   final String des;
   final String name;
-  final String price;
+  final String productPrice;
+  final String sellingPrice;
 
   EditProduct(
       {super.key,
       required this.options,
       required this.image,
       required this.name,
-      required this.price,
+      required this.productPrice,
+      required this.sellingPrice,
       required this.des});
   final List<BrandModel> options;
 
@@ -34,7 +36,10 @@ class EditProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController(text: name);
 
-    TextEditingController priceController = TextEditingController(text: price);
+    TextEditingController priceController =
+        TextEditingController(text: productPrice);
+    TextEditingController sellingPriceController =
+        TextEditingController(text: productPrice);
 
     TextEditingController descriptionController =
         TextEditingController(text: des);
@@ -52,15 +57,15 @@ class EditProduct extends StatelessWidget {
       }
 
       ProductModel model = ProductModel(
-          ProductName: nameController.text.trim(),
-          ProductPrice: priceController.text.trim(),
-          ProductDes: descriptionController.text.trim(),
+          productName: nameController.text.trim(),
+          productPrice: priceController.text.trim(),
+          discountPrice: sellingPriceController.text.trim(),
+          productDes: descriptionController.text.trim(),
           ProductCategory: selectedOption,
           productImg: downloadImageUrl);
 
       await ProductServices().deleteProduct(name);
       await ProductServices().addProduct(model);
-
     }
 
     return Scaffold(
@@ -101,6 +106,10 @@ class EditProduct extends StatelessWidget {
                   Controller: priceController,
                   title: 'Product Price',
                   hint: 'Enter the Product price'),
+              AddProductWidget(
+                  Controller: sellingPriceController,
+                  title: 'Selling Price',
+                  hint: 'Enter the Product price'),  
               kheight10,
               const Text(
                 'Description',
@@ -155,7 +164,7 @@ class EditProduct extends StatelessWidget {
                     await editProductfunc();
                     Get.off(const HomeScreen());
                   },
-                  child: const Text('Add'))
+                  child: const Text('edit'))
             ],
           ),
         ),

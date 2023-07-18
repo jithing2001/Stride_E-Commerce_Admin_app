@@ -1,22 +1,25 @@
 class ProductModel {
-  final String ProductName;
-  final String ProductPrice;
-  final String ProductDes;
+  final String productName;
+  final String productPrice;
+  final String productDes;
   final String ProductCategory;
+  final String discountPrice;
 
   final String productImg;
 
   ProductModel(
-      {required this.ProductName,
-      required this.ProductPrice,
-      required this.ProductDes,
+      {required this.productName,
+      required this.productPrice,
+      required this.discountPrice,
+      required this.productDes,
       required this.productImg,
       required this.ProductCategory});
 
   Map<String, dynamic> toJson() => {
-        'productName': ProductName,
-        'ProductPrice': ProductPrice,
-        'ProductDes': ProductDes,
+        'productName': productName,
+        'productPrice': productPrice,
+        'discountPrice':discountPrice,
+        'productDes': productDes,
         'productImg': productImg,
         'productCategory': ProductCategory,
       };

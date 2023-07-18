@@ -11,12 +11,14 @@ class ProductDetailView extends StatelessWidget {
   String? productNames;
   String? productDes;
   String? productRate;
+  String? sellingPrice;
   ProductDetailView(
       {super.key,
       required this.imgPath,
       required this.productNames,
       required this.productDes,
-      required this.productRate});
+      required this.productRate,
+      required this.sellingPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,11 @@ class ProductDetailView extends StatelessWidget {
                 List<BrandModel> list = await BrandServices().getCategories();
                 Get.to(EditProduct(
                   options: list,
-                  image:imgPath!,
+                  image: imgPath!,
                   des: productDes!,
                   name: productNames!,
-                  price: productRate!,
+                  productPrice: productRate!,
+                  sellingPrice: sellingPrice!,
                 ));
               },
               icon: Icon(
@@ -51,8 +54,39 @@ class ProductDetailView extends StatelessWidget {
               )),
           IconButton(
               onPressed: () async {
-                await ProductServices().deleteProduct('$productNames');
-                Get.back();
+                Get.dialog(AlertDialog(
+                  content: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      children: [
+                        const Text('Are you sure?'),
+                        kheight30,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await ProductServices()
+                                    .deleteProduct(productNames!);
+                                Get.back();
+                              },
+                              child: const Text(
+                                'Yes',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            kwidth40,
+                            InkWell(
+                                onTap: () => Get.back(),
+                                child:
+                                    const Text('No', style: TextStyle(fontSize: 20)))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ));
               },
               icon: Icon(
                 Icons.delete,
@@ -81,7 +115,7 @@ class ProductDetailView extends StatelessWidget {
           kheight20,
           Row(
             children: [
-              kwidth50,
+              kwidth25,
               SizedBox(
                 width: 350,
                 child: Text(
@@ -95,9 +129,15 @@ class ProductDetailView extends StatelessWidget {
           ),
           Row(
             children: [
-              kwidth50,
+              kwidth25,
               Text(
                 '₹$productRate',
+                style: const TextStyle(
+                    fontSize: 30, decoration: TextDecoration.lineThrough),
+              ),
+              kwidth10,
+              Text(
+                '₹$sellingPrice',
                 style:
                     const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
@@ -109,7 +149,7 @@ class ProductDetailView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 25, right: 25),
             child: Text(
               '$productDes',
-              style: TextStyle(fontSize: 15),
+              style: const TextStyle(fontSize: 15),
             ),
           )),
         ],

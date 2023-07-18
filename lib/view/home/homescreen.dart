@@ -1,11 +1,9 @@
 import 'package:ecommerce_admin/model/categorymode.dart';
-import 'package:ecommerce_admin/model/product_model.dart';
 import 'package:ecommerce_admin/service/brandservices.dart';
 import 'package:ecommerce_admin/view/add_brand/add_brand.dart';
 import 'package:ecommerce_admin/view/add_product/add_product.dart';
 import 'package:ecommerce_admin/view/all_brands/all_brands.dart';
-import 'package:ecommerce_admin/view/all_order/all_order.dart';
-import 'package:ecommerce_admin/view/all_order/tabs.dart';
+import 'package:ecommerce_admin/view/all_order/users.dart';
 import 'package:ecommerce_admin/view/all_products/all_products.dart';
 import 'package:ecommerce_admin/view/home/widgets/homescreenwidget.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +50,10 @@ class HomeScreen extends StatelessWidget {
                     child: HomeListWidgets(title: 'Add Products')),
                 const Divider(),
                 InkWell(
-                    onTap: () => Get.to(const Tabs()),
+                    onTap: () async {
+                      // await ProductServices().getuser();
+                      Get.to(const Users());
+                    },
                     child: HomeListWidgets(title: 'All Orders'))
               ],
             ),

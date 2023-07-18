@@ -21,7 +21,8 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   XFile? image;
   TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
+  TextEditingController productPriceController = TextEditingController();
+  TextEditingController sellingPriceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   late String selectedOption = widget.options[0].category;
   @override
@@ -63,15 +64,19 @@ class _AddProductState extends State<AddProduct> {
                       });
                     }
                   },
-                  child: Text('Add Image')),
+                  child: const Text('Add Image')),
               kheight20,
               AddProductWidget(
                   Controller: nameController,
                   title: 'Product Name',
                   hint: 'Enter the Product name'),
               AddProductWidget(
-                  Controller: priceController,
+                  Controller: productPriceController,
                   title: 'Product Price',
+                  hint: 'Enter the Product price'),
+              AddProductWidget(
+                  Controller: sellingPriceController,
+                  title: 'Selling Price',
                   hint: 'Enter the Product price'),
               kheight10,
               const Text(
@@ -125,7 +130,7 @@ class _AddProductState extends State<AddProduct> {
               ElevatedButton(
                   onPressed: () async {
                     await AddProductfunc();
-                    Get.off(HomeScreen());
+                    Get.off(const HomeScreen());
                   },
                   child: const Text('Add'))
             ],
@@ -139,9 +144,10 @@ class _AddProductState extends State<AddProduct> {
     final downloadImageUrl = await BrandServices().uploadImage(image!);
 
     ProductModel model = ProductModel(
-        ProductName: nameController.text,
-        ProductPrice: priceController.text,
-        ProductDes: descriptionController.text,
+        productName: nameController.text,
+        productPrice: productPriceController.text,
+        discountPrice: sellingPriceController.text,
+        productDes: descriptionController.text,
         ProductCategory: selectedOption,
         productImg: downloadImageUrl);
 

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Tabs extends StatelessWidget {
-  const Tabs({super.key});
+  final user;
+  const Tabs({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,10 @@ class Tabs extends StatelessWidget {
               },
               icon: const Icon(Icons.arrow_back)),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            ActiveOrder(),
-            CompletedOrder(),
+            ActiveOrder(user: user),
+            CompletedOrder(user: user),
           ],
         ),
       ),

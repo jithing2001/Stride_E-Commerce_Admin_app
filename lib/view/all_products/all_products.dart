@@ -53,9 +53,11 @@ class AllProducts extends StatelessWidget {
                                 productNames: snapshot.data!.docs[index]
                                     ['productName'],
                                 productDes: snapshot.data!.docs[index]
-                                    ['ProductDes'],
+                                    ['productDes'],
                                 productRate: snapshot.data!.docs[index]
-                                    ['ProductPrice'],
+                                    ['productPrice'],
+                                sellingPrice: snapshot.data!.docs[index]
+                                    ['discountPrice'],
                               ));
                               log(index.toString());
                             },
@@ -64,7 +66,7 @@ class AllProducts extends StatelessWidget {
                               productName: snapshot.data!.docs[index]
                                   ['productName'],
                               productRate: snapshot.data!.docs[index]
-                                  ['ProductPrice'],
+                                  ['productPrice'],
                             ),
                           );
                         },

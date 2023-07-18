@@ -1,71 +1,68 @@
 import 'package:ecommerce_admin/constants.dart';
+import 'package:ecommerce_admin/service/order_tracking_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:order_tracker/order_tracker.dart';
 
-class OrderTrackerClass extends StatefulWidget {
-  const OrderTrackerClass({Key? key}) : super(key: key);
-
-  @override
-  State<OrderTrackerClass> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<OrderTrackerClass> {
-  List<TextDto> orderList = [
-    TextDto("Your order has been placed", ""),
-    TextDto("Seller processed your order", ""),
-    TextDto("Your item has been picked up by courier partner.", ""),
-  ];
-
-  List<TextDto> shippedList = [
-    TextDto("Your order has been shipped", ""),
-    TextDto("Your item has been received in the nearest hub to you.", null),
-  ];
-
-  List<TextDto> outOfDeliveryList = [
-    TextDto("Your order is out for delivery", ""),
-  ];
-
-  List<TextDto> deliveredList = [
-    TextDto("Your order has been delivered", ""),
-  ];
+class OrderTracker extends StatelessWidget {
+  final data;
+  final user;
+  const OrderTracker({super.key, required this.data, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kwhite,
       appBar: AppBar(
-        title: const Text(
-          'Track Your Order',
-          style: TextStyle(
-              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Update Order Status'),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: kwhite,
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: kblack,
-            )),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: OrderTracker(
-          status: Status.delivered,
-          activeColor: Colors.green,
-          inActiveColor: Colors.grey[300],
-          orderTitleAndDateList: orderList,
-          shippedTitleAndDateList: shippedList,
-          outOfDeliveryTitleAndDateList: outOfDeliveryList,
-          deliveredTitleAndDateList: deliveredList,
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Order Details',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            kheight30,
+            Text(
+              "Product Name: ${data["productName"]}",
+              style: const TextStyle(fontSize: 17),
+            ),
+            kheight10,
+            Text(
+              "Product Price: ₹${data["price"]}",
+              style: const TextStyle(fontSize: 17),
+            ),
+            kheight10,
+            Text(
+              "Product Size: ${data["size"]}",
+              style: const TextStyle(fontSize: 17),
+            ),
+            Text(
+              "Delivery Address: ${data["address"]}",
+              style: const TextStyle(fontSize: 17),
+            ),
+            kheight10,
+            Text(
+              "Order Status: ${data["status"]}",
+              style: const TextStyle(fontSize: 17),
+            ),
+            kheight10,
+            ElevatedButton(
+                onPressed: () async {
+                  await Update().updateOrder(user, data['productName']);
+                  Get.back();
+                },
+                child: const Text('Completed'))
+          ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: const Icon(Icons.add)),
     );
   }
 }
