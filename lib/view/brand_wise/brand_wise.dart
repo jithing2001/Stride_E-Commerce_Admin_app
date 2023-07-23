@@ -32,13 +32,17 @@ class BrandWise extends StatelessWidget {
                   crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) => InkWell(
-                onTap: () => Get.to(ProductDetailView(
-                  imgPath: snapshot.data!.docs[index]['productImg'],
-                  productNames: snapshot.data!.docs[index]['productName'],
-                  productDes: snapshot.data!.docs[index]['ProductDes'],
-                  productRate: snapshot.data!.docs[index]['ProductPrice'],
-                  sellingPrice: snapshot.data!.docs[index]['discountPrice'],
-                )),
+                // onTap: () => Get.to(
+
+                //   ProductDetailView(
+                //   imgPath: snapshot.data!.docs[index]['productImg'],
+                //   productNames: snapshot.data!.docs[index]['productName'],
+                //   productDes: snapshot.data!.docs[index]['ProductDes'],
+                //   productRate: snapshot.data!.docs[index]['ProductPrice'],
+                //   sellingPrice: snapshot.data!.docs[index]['discountPrice'],
+                // )
+
+                // ),
                 child: ProductGridView(
                     imgPath: snapshot.data!.docs[index]['productImg'],
                     productName: snapshot.data!.docs[index]['productName'],

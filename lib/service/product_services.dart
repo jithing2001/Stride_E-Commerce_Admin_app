@@ -25,11 +25,19 @@ class ProductServices {
   }
 
   getuser() async {
-     user = await FirebaseFirestore.instance
+    user = await FirebaseFirestore.instance
         .collection('users')
         .doc('myorder')
         .get();
     log(user.toString());
+  }
+
+  getProduct() {
+   final get= FirebaseFirestore.instance
+        .collection('myApp')
+        .doc('Admin')
+        .collection('products')
+        .get();
     
   }
 }

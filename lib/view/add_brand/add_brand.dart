@@ -6,6 +6,7 @@ import 'package:ecommerce_admin/view/home/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddBrand extends StatefulWidget {
   const AddBrand({super.key});
@@ -67,6 +68,10 @@ class _AddBrandState extends State<AddBrand> {
                 height: 40,
                 child: ElevatedButton(
                     onPressed: () async {
+                      Get.dialog(Center(
+                        child: LoadingAnimationWidget.waveDots(
+                            color: Colors.white, size: 50),
+                      ));
                       await addCategory();
                       Get.snackbar(
                         'Added Brand Successful',

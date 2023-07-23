@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:ecommerce_admin/constants.dart';
+import 'package:ecommerce_admin/controller/edit_image_controller.dart';
+import 'package:ecommerce_admin/controller/image_controller.dart';
 import 'package:ecommerce_admin/model/categorymode.dart';
 import 'package:ecommerce_admin/model/product_model.dart';
 import 'package:ecommerce_admin/service/brandservices.dart';
@@ -9,6 +12,7 @@ import 'package:ecommerce_admin/view/home/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key, required this.options});
@@ -25,6 +29,9 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController sellingPriceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   late String selectedOption = widget.options[0].category;
+  XFile? image1;
+  XFile? image2;
+  XFile? image3;
   @override
   Widget build(BuildContext context) {
     // final snap = FirebaseFirestore.instance
@@ -32,7 +39,7 @@ class _AddProductState extends State<AddProduct> {
     //     .doc('Admin')
     //     .collection('Category')
     //     .snapshots();
-
+    final ImageAddNotifier imageControllere = Get.put(ImageAddNotifier());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Product'),
@@ -43,28 +50,141 @@ class _AddProductState extends State<AddProduct> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 90,
-                    backgroundColor: kblack,
-                    backgroundImage:
-                        image != null ? FileImage(File(image!.path)) : null,
-                  )
-                ],
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    final pickedImage = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (pickedImage != null) {
-                      setState(() {
-                        image = pickedImage;
-                      });
-                    }
-                  },
-                  child: const Text('Add Image')),
+              GetBuilder<ImageAddNotifier>(builder: (imageController) {
+                return Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 300,
+                      color: imageController.selectedIndex == null
+                          ? const Color(0xFF2C2B2B)
+                          : kwhite,
+                      child: imageController.selectedIndex == null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Image",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                      color: kwhite),
+                                ),
+                                Icon(
+                                  Icons.add_a_photo_outlined,
+                                  color: kwhite,
+                                  size: 28,
+                                )
+                              ],
+                            )
+                          : Center(
+                              child: SizedBox(
+                                height: 200,
+                                width: 200,
+                                child: Image.file(
+                                  File(imageController.imageList[
+                                      imageController.selectedIndex!]),
+                                  // fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => InkWell(
+                                    onTap: () async {
+                                      if (index ==
+                                          (imageController.imageList.length)) {
+                                        final pickedFile = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                        if (pickedFile != null) {
+                                          if (index == 0) {
+                                            image1 = pickedFile;
+                                          } else if (index == 1) {
+                                            image2 = pickedFile;
+                                          } else if (index == 2) {
+                                            image3 = pickedFile;
+                                          }
+                                          imageController.imageAdd(
+                                              imagePath: pickedFile.path,
+                                              index: index);
+                                        }
+                                      } else {
+                                        imageController.changeIndex(
+                                            index: index);
+                                      }
+                                    },
+                                    child: Center(
+                                      child: index ==
+                                              imageController.imageList.length
+                                          ? Container(
+                                              width: 70,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  color:
+                                                      const Color(0xFF2C2B2B)),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.add_a_photo_outlined,
+                                                  color: kwhite,
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 35,
+                                              backgroundImage: FileImage(
+                                                File(imageController
+                                                    .imageList[index]),
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                              itemCount: imageController.imageList.length < 3
+                                  ? imageController.imageList.length + 1
+                                  : 3)
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     CircleAvatar(
+              //       radius: 90,
+              //       backgroundColor: kblack,
+              //       backgroundImage:
+              //           image != null ? FileImage(File(image!.path)) : null,
+              //     )
+              //   ],
+              // ),
+              // ElevatedButton(
+              //     onPressed: () async {
+              //       final pickedImage = await ImagePicker()
+              //           .pickImage(source: ImageSource.gallery);
+              //       if (pickedImage != null) {
+              //         setState(() {
+              //           image = pickedImage;
+              //         });
+              //       }
+              //     },
+              //     child: const Text('Add Image')),
               kheight20,
               AddProductWidget(
                   Controller: nameController,
@@ -129,6 +249,10 @@ class _AddProductState extends State<AddProduct> {
               kheight10,
               ElevatedButton(
                   onPressed: () async {
+                    Get.dialog(Center(
+                      child: LoadingAnimationWidget.waveDots(
+                          color: Colors.white, size: 50),
+                    ));
                     await AddProductfunc();
                     Get.off(const HomeScreen());
                   },
@@ -141,15 +265,26 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> AddProductfunc() async {
-    final downloadImageUrl = await BrandServices().uploadImage(image!);
+    log('enter');
+    final downloadImageUrl1 = await BrandServices().uploadImage(image1!);
+    log('1');
+    final downloadImageUrl2 = await BrandServices().uploadImage(image2!);
+    log('2');
+
+    final downloadImageUrl3 = await BrandServices().uploadImage(image3!);
+    log('3');
 
     ProductModel model = ProductModel(
-        productName: nameController.text,
-        productPrice: productPriceController.text,
-        discountPrice: sellingPriceController.text,
-        productDes: descriptionController.text,
-        ProductCategory: selectedOption,
-        productImg: downloadImageUrl);
+      productName: nameController.text,
+      productPrice: productPriceController.text,
+      discountPrice: sellingPriceController.text,
+      productDes: descriptionController.text,
+      ProductCategory: selectedOption,
+      productImg1: downloadImageUrl1,
+      productImg2: downloadImageUrl2,
+      productImg3: downloadImageUrl3,
+    );
+    log('model');
 
     await ProductServices().addProduct(model);
   }

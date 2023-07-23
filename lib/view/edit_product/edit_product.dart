@@ -13,7 +13,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProduct extends StatelessWidget {
-  final String image;
+  final String image1;
+  final String image2;
+  final String image3;
   final String des;
   final String name;
   final String productPrice;
@@ -22,7 +24,9 @@ class EditProduct extends StatelessWidget {
   EditProduct(
       {super.key,
       required this.options,
-      required this.image,
+      required this.image1,
+      required this.image2,
+      required this.image3,
       required this.name,
       required this.productPrice,
       required this.sellingPrice,
@@ -45,15 +49,22 @@ class EditProduct extends StatelessWidget {
         TextEditingController(text: des);
 
     Future<void> editProductfunc() async {
-      String? downloadImageUrl;
+      String? downloadImageUrl1;
+      String? downloadImageUrl2;
+      String? downloadImageUrl3;
+
+      // Check if any image is edited and upload the new image
       if (editImg.pickedImg.isNotEmpty) {
-        downloadImageUrl =
-            await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
-      } else {
-        downloadImageUrl = image;
-      }
-      if (downloadImageUrl == null) {
-        return;
+        if (editImg.selectedIndex == 0) {
+          downloadImageUrl1 =
+              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
+        } else if (editImg.selectedIndex == 1) {
+          downloadImageUrl2 =
+              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
+        } else if (editImg.selectedIndex == 2) {
+          downloadImageUrl3 =
+              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
+        }
       }
 
       ProductModel model = ProductModel(
@@ -62,7 +73,9 @@ class EditProduct extends StatelessWidget {
           discountPrice: sellingPriceController.text.trim(),
           productDes: descriptionController.text.trim(),
           ProductCategory: selectedOption,
-          productImg: downloadImageUrl);
+          productImg1: downloadImageUrl1 ?? '',
+          productImg2: downloadImageUrl2 ?? '',
+          productImg3: downloadImageUrl3 ?? '');
 
       await ProductServices().deleteProduct(name);
       await ProductServices().addProduct(model);
@@ -81,22 +94,35 @@ class EditProduct extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(() {
-                    return CircleAvatar(
-                        radius: 90,
-                        backgroundColor: kblack,
-                        backgroundImage: editImg.pickedImg.isEmpty
-                            ? NetworkImage(image)
-                            : FileImage(File(editImg.pickedImg.value))
-                                as ImageProvider);
-                  })
+                  Column(
+                    children: [
+                      for (int i = 0; i < 3; i++)
+                        GestureDetector(
+                          onTap: () => editImg.changeImg(i),
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage: editImg.pickedImages[i].isEmpty
+                                ? NetworkImage(i == 0
+                                    ? image1
+                                    : (i == 1 ? image2 : image3))
+                                : FileImage(File(editImg.pickedImages[i]))
+                                    as ImageProvider<Object>?,
+                          ),
+                        ),
+                    ],
+                  )
                 ],
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    editImg.changeImg();
-                  },
-                  child: const Text('Add New Image')),
+              Column(
+                children: [
+                  ...List.generate(
+                      3,
+                      (index) => ElevatedButton(
+                            onPressed: () async => editImg.changeImg(index),
+                            child: Text('Change Image ${index + 1}'),
+                          )),
+                ],
+              ),
               kheight20,
               AddProductWidget(
                   Controller: nameController,
@@ -109,7 +135,7 @@ class EditProduct extends StatelessWidget {
               AddProductWidget(
                   Controller: sellingPriceController,
                   title: 'Selling Price',
-                  hint: 'Enter the Product price'),  
+                  hint: 'Enter the Product price'),
               kheight10,
               const Text(
                 'Description',
@@ -169,6 +195,13 @@ class EditProduct extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget displayCurrentImage(String imagePath) {
+    return CircleAvatar(
+      radius: 60,
+      backgroundImage: NetworkImage(imagePath),
     );
   }
 }

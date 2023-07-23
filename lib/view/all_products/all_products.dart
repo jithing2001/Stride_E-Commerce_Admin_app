@@ -48,8 +48,12 @@ class AllProducts extends StatelessWidget {
                           return InkWell(
                             onTap: () {
                               Get.to(ProductDetailView(
-                                imgPath: snapshot.data!.docs[index]
-                                    ['productImg'],
+                                imgPath1: snapshot.data!.docs[index]
+                                    ['productImg1'],
+                                imgPath2: snapshot.data!.docs[index]
+                                    ['productImg2'],
+                                imgPath3: snapshot.data!.docs[index]
+                                    ['productImg3'],
                                 productNames: snapshot.data!.docs[index]
                                     ['productName'],
                                 productDes: snapshot.data!.docs[index]
@@ -62,7 +66,8 @@ class AllProducts extends StatelessWidget {
                               log(index.toString());
                             },
                             child: ProductGridView(
-                              imgPath: snapshot.data!.docs[index]['productImg'],
+                              imgPath: snapshot.data!.docs[index]
+                                  ['productImg1'],
                               productName: snapshot.data!.docs[index]
                                   ['productName'],
                               productRate: snapshot.data!.docs[index]
