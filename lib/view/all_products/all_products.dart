@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_admin/model/product_model.dart';
 import 'package:ecommerce_admin/view/all_products/widgets/product_detail_view.dart';
 import 'package:ecommerce_admin/view/all_products/widgets/products_grid.dart';
 import 'package:flutter/material.dart';
@@ -34,44 +35,41 @@ class AllProducts extends StatelessWidget {
                         );
                       }
 
+                      // print(snapshot.data!.docs.map((e) => e.data()));
+
                       return GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
+                                childAspectRatio: 0.9,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
                         itemBuilder: (context, index) {
-                          // final productData = products[index].data();
-                          // final productDoc = snapshot.data!.docs[index];
-                          // final categoryId = productDoc.id;
+                          List<ProductModel> allProductModel = [];
+                          allProductModel.addAll(snapshot.data!.docs
+                              .map((e) => ProductModel.fromJson(e.data())));
+                          
 
                           return InkWell(
                             onTap: () {
                               Get.to(ProductDetailView(
-                                imgPath1: snapshot.data!.docs[index]
-                                    ['productImg1'],
-                                imgPath2: snapshot.data!.docs[index]
-                                    ['productImg2'],
-                                imgPath3: snapshot.data!.docs[index]
-                                    ['productImg3'],
-                                productNames: snapshot.data!.docs[index]
-                                    ['productName'],
-                                productDes: snapshot.data!.docs[index]
-                                    ['productDes'],
-                                productRate: snapshot.data!.docs[index]
-                                    ['productPrice'],
-                                sellingPrice: snapshot.data!.docs[index]
-                                    ['discountPrice'],
+                                imgPath1: allProductModel[index].productImg1,
+                                imgPath2: allProductModel[index].productImg2,
+                                imgPath3: allProductModel[index].productImg3,
+                                productNames:
+                                    allProductModel[index].productName,
+                                productDes: allProductModel[index].productDes,
+                                productRate:
+                                    allProductModel[index].productPrice,
+                                sellingPrice:
+                                    allProductModel[index].discountPrice,
                               ));
                               log(index.toString());
                             },
                             child: ProductGridView(
-                              imgPath: snapshot.data!.docs[index]
-                                  ['productImg1'],
-                              productName: snapshot.data!.docs[index]
-                                  ['productName'],
-                              productRate: snapshot.data!.docs[index]
-                                  ['productPrice'],
+                              imgPath: allProductModel[index].productImg1,
+                              productName: allProductModel[index].productName,
+                              productRate: allProductModel[index].discountPrice,
                             ),
                           );
                         },

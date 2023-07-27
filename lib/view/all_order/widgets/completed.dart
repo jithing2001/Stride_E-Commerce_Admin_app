@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CompletedOrder extends StatelessWidget {
-  String user;
-  CompletedOrder({super.key, required this.user});
+  // String user;
+  CompletedOrder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class CompletedOrder extends StatelessWidget {
           stream: FirebaseFirestore.instance
               .collection('users')
               .doc('myorder')
-              .collection(user)
+              .collection('allOrders')
               .where('status', isEqualTo: 'completed')
               .snapshots(),
           builder: (context, snapshot) {

@@ -13,4 +13,6 @@ class BrandModel {
         category: json['category'],
         image: json['image'],
       );
+
+    
 }

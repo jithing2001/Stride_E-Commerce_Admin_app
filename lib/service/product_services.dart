@@ -5,6 +5,7 @@ import 'package:ecommerce_admin/model/product_model.dart';
 
 class ProductServices {
   DocumentSnapshot<Map<String, dynamic>>? user;
+
   addProduct(ProductModel productModel) async {
     FirebaseFirestore ref = FirebaseFirestore.instance;
     CollectionReference collectionRef =

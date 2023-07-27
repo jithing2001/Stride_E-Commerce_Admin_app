@@ -163,28 +163,7 @@ class _AddProductState extends State<AddProduct> {
                 );
               }),
 
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     CircleAvatar(
-              //       radius: 90,
-              //       backgroundColor: kblack,
-              //       backgroundImage:
-              //           image != null ? FileImage(File(image!.path)) : null,
-              //     )
-              //   ],
-              // ),
-              // ElevatedButton(
-              //     onPressed: () async {
-              //       final pickedImage = await ImagePicker()
-              //           .pickImage(source: ImageSource.gallery);
-              //       if (pickedImage != null) {
-              //         setState(() {
-              //           image = pickedImage;
-              //         });
-              //       }
-              //     },
-              //     child: const Text('Add Image')),
+         
               kheight20,
               AddProductWidget(
                   Controller: nameController,

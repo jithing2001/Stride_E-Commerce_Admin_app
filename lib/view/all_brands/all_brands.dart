@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_admin/model/categorymode.dart';
 import 'package:ecommerce_admin/view/brand_wise/brand_wise.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,17 +32,20 @@ class AllBrands extends StatelessWidget {
                 height: 20,
               ),
               itemBuilder: (context, index) {
+                List<BrandModel> allBrandModel = [];
+                allBrandModel.addAll(snapshot.data!.docs
+                    .map((e) => BrandModel.fromJson(e.data())));
                 final categoryDoc = snapshot.data!.docs[index];
                 final categoryId = categoryDoc.id;
                 return InkWell(
-                  onTap: () => Get.to(
-                      BrandWise(title: snapshot.data!.docs[index]['category'])),
+                  onTap: () =>
+                      Get.to(BrandWise(title: allBrandModel[index].category)),
                   child: ListTile(
                     leading: CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.black,
                         backgroundImage:
-                            NetworkImage(snapshot.data!.docs[index]['image'])),
+                            NetworkImage(allBrandModel[index].image)),
                     title: Text(
                       snapshot.data!.docs[index]['category'],
                       style: const TextStyle(fontSize: 25),

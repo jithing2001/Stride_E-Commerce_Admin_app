@@ -11,6 +11,7 @@ import 'package:ecommerce_admin/view/home/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EditProduct extends StatelessWidget {
   final String image1;
@@ -34,6 +35,7 @@ class EditProduct extends StatelessWidget {
   final List<BrandModel> options;
 
   late String selectedOption = options[0].category;
+
   EditImgController editImg = EditImgController();
 
   @override
@@ -53,19 +55,15 @@ class EditProduct extends StatelessWidget {
       String? downloadImageUrl2;
       String? downloadImageUrl3;
 
-      // Check if any image is edited and upload the new image
-      if (editImg.pickedImg.isNotEmpty) {
-        if (editImg.selectedIndex == 0) {
-          downloadImageUrl1 =
-              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
-        } else if (editImg.selectedIndex == 1) {
-          downloadImageUrl2 =
-              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
-        } else if (editImg.selectedIndex == 2) {
-          downloadImageUrl3 =
-              await BrandServices().uploadImage(XFile(editImg.pickedImg.value));
-        }
-      }
+      downloadImageUrl1 = editImg.pickedImages[0].isEmpty
+          ? image1
+          : await BrandServices().uploadImage(XFile(editImg.pickedImages[0]));
+      downloadImageUrl2 = editImg.pickedImages[1].isEmpty
+          ? image2
+          : await BrandServices().uploadImage(XFile(editImg.pickedImages[1]));
+      downloadImageUrl3 = editImg.pickedImages[2].isEmpty
+          ? image3
+          : await BrandServices().uploadImage(XFile(editImg.pickedImages[2]));
 
       ProductModel model = ProductModel(
           productName: nameController.text.trim(),
@@ -73,9 +71,9 @@ class EditProduct extends StatelessWidget {
           discountPrice: sellingPriceController.text.trim(),
           productDes: descriptionController.text.trim(),
           ProductCategory: selectedOption,
-          productImg1: downloadImageUrl1 ?? '',
-          productImg2: downloadImageUrl2 ?? '',
-          productImg3: downloadImageUrl3 ?? '');
+          productImg1: downloadImageUrl1,
+          productImg2: downloadImageUrl2,
+          productImg3: downloadImageUrl3);
 
       await ProductServices().deleteProduct(name);
       await ProductServices().addProduct(model);
@@ -98,16 +96,26 @@ class EditProduct extends StatelessWidget {
                     children: [
                       for (int i = 0; i < 3; i++)
                         GestureDetector(
-                          onTap: () => editImg.changeImg(i),
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage: editImg.pickedImages[i].isEmpty
-                                ? NetworkImage(i == 0
-                                    ? image1
-                                    : (i == 1 ? image2 : image3))
-                                : FileImage(File(editImg.pickedImages[i]))
-                                    as ImageProvider<Object>?,
-                          ),
+                          onTap: () {
+                            print("before${editImg.pickedImages}");
+
+                            editImg.changeImg(i);
+                            print("after${editImg.pickedImages}");
+                          },
+                          child: GetBuilder(
+                              init: editImg,
+                              builder: (controller) {
+                                return CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: editImg
+                                          .pickedImages[i].isEmpty
+                                      ? NetworkImage(i == 0
+                                          ? image1
+                                          : (i == 1 ? image2 : image3))
+                                      : FileImage(File(editImg.pickedImages[i]))
+                                          as ImageProvider<Object>?,
+                                );
+                              }),
                         ),
                     ],
                   )
@@ -187,6 +195,10 @@ class EditProduct extends StatelessWidget {
               kheight10,
               ElevatedButton(
                   onPressed: () async {
+                    Get.dialog(Center(
+                      child: LoadingAnimationWidget.waveDots(
+                          color: Colors.white, size: 50),
+                    ));
                     await editProductfunc();
                     Get.off(const HomeScreen());
                   },

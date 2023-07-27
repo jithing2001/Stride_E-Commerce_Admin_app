@@ -44,6 +44,7 @@ class ProductDetailView extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 List<BrandModel> list = await BrandServices().getCategories();
+                
                 Get.to(EditProduct(
                   options: list,
                   image1: imgPath1!,

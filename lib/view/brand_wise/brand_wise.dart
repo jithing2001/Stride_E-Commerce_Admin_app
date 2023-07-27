@@ -28,25 +28,23 @@ class BrandWise extends StatelessWidget {
             }
             return GridView.builder(
               padding: const EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: 0.9,
                   crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) => InkWell(
-                // onTap: () => Get.to(
-
-                //   ProductDetailView(
-                //   imgPath: snapshot.data!.docs[index]['productImg'],
-                //   productNames: snapshot.data!.docs[index]['productName'],
-                //   productDes: snapshot.data!.docs[index]['ProductDes'],
-                //   productRate: snapshot.data!.docs[index]['ProductPrice'],
-                //   sellingPrice: snapshot.data!.docs[index]['discountPrice'],
-                // )
-
-                // ),
+                onTap: () => Get.to(ProductDetailView(
+                  imgPath1: snapshot.data!.docs[index]['productImg1'],
+                  imgPath2: snapshot.data!.docs[index]['productImg2'],
+                  imgPath3: snapshot.data!.docs[index]['productImg3'],
+                  productNames: snapshot.data!.docs[index]['productName'],
+                  productDes: snapshot.data!.docs[index]['productDes'],
+                  productRate: snapshot.data!.docs[index]['productPrice'],
+                  sellingPrice: snapshot.data!.docs[index]['discountPrice'],
+                )),
                 child: ProductGridView(
-                    imgPath: snapshot.data!.docs[index]['productImg'],
+                    imgPath: snapshot.data!.docs[index]['productImg1'],
                     productName: snapshot.data!.docs[index]['productName'],
-                    productRate: snapshot.data!.docs[index]['ProductPrice']),
+                    productRate: snapshot.data!.docs[index]['discountPrice']),
               ),
             );
           }),
