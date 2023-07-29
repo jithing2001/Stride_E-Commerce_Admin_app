@@ -27,7 +27,7 @@ class ActiveOrder extends StatelessWidget {
               return const CircularProgressIndicator();
             }
             if (snapshot.data!.docs.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('Data is empty'),
               );
             }

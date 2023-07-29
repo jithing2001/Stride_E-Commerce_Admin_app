@@ -32,13 +32,16 @@ class _AddProductState extends State<AddProduct> {
   XFile? image1;
   XFile? image2;
   XFile? image3;
+  // @override
+  // void dispose() {
+  //   final imageController = Get.find<ImageAddNotifier>();
+  //   imageController.imageList.clear();
+  //   imageController.selectedIndex = null;
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
-    // final snap = FirebaseFirestore.instance
-    //     .collection('myApp')
-    //     .doc('Admin')
-    //     .collection('Category')
-    //     .snapshots();
     final ImageAddNotifier imageControllere = Get.put(ImageAddNotifier());
     return Scaffold(
       appBar: AppBar(
@@ -162,8 +165,6 @@ class _AddProductState extends State<AddProduct> {
                   ],
                 );
               }),
-
-         
               kheight20,
               AddProductWidget(
                   Controller: nameController,
@@ -233,7 +234,8 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.white, size: 50),
                     ));
                     await AddProductfunc();
-                    Get.off(const HomeScreen());
+
+                    Get.offAll(const HomeScreen());
                   },
                   child: const Text('Add'))
             ],

@@ -69,7 +69,8 @@ class AllProducts extends StatelessWidget {
                             child: ProductGridView(
                               imgPath: allProductModel[index].productImg1,
                               productName: allProductModel[index].productName,
-                              productRate: allProductModel[index].discountPrice,
+                              productRate: allProductModel[index].productPrice,
+                              sellingRate: allProductModel[index].discountPrice,
                             ),
                           );
                         },

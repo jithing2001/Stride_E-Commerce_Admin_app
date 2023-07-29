@@ -44,7 +44,9 @@ class BrandWise extends StatelessWidget {
                 child: ProductGridView(
                     imgPath: snapshot.data!.docs[index]['productImg1'],
                     productName: snapshot.data!.docs[index]['productName'],
-                    productRate: snapshot.data!.docs[index]['discountPrice']),
+                    productRate: snapshot.data!.docs[index]['discountPrice'],
+                    sellingRate: snapshot.data!.docs[index]['productPrice'],
+                    ),
               ),
             );
           }),

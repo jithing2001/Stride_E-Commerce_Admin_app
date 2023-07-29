@@ -44,7 +44,7 @@ class ProductDetailView extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 List<BrandModel> list = await BrandServices().getCategories();
-                
+
                 Get.to(EditProduct(
                   options: list,
                   image1: imgPath1!,
@@ -120,8 +120,7 @@ class ProductDetailView extends StatelessWidget {
                         NetworkImage('$imgPath2'),
                         NetworkImage('$imgPath3'),
                       ],
-                    )
-                    ),
+                    )),
               ],
             ),
             kheight20,
@@ -160,14 +159,13 @@ class ProductDetailView extends StatelessWidget {
               ],
             ),
             kheight20,
-            Center(
-                child: Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 25, right: 25),
               child: Text(
                 '$productDes',
                 style: const TextStyle(fontSize: 15),
               ),
-            )),
+            ),
           ],
         ),
       ),

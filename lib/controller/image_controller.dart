@@ -13,12 +13,10 @@ class ImageAddNotifier extends GetxController {
   changeIndex({required int index}) {
     selectedIndex = index;
     update();
-
   }
 
   imageRemove({required int imageIndex}) {
     imageList.removeAt(imageIndex);
     update();
-
   }
 }
