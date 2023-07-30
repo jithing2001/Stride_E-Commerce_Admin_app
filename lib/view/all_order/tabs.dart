@@ -1,6 +1,7 @@
 import 'package:ecommerce_admin/view/all_order/widgets/active.dart';
 import 'package:ecommerce_admin/view/all_order/widgets/completed.dart';
 import 'package:ecommerce_admin/view/all_order/widgets/pending.dart';
+import 'package:ecommerce_admin/view/all_order/widgets/shipped.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,13 +12,14 @@ class Tabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Pending'),
               Tab(text: 'Active'),
+              Tab(text: 'Shipped'),
               Tab(
                 text: 'Completed',
               ),
@@ -35,6 +37,7 @@ class Tabs extends StatelessWidget {
           children: [
             const Pending_Orders(),
             const ActiveOrder(),
+            const ShippedOrder(),
             CompletedOrder()
           ],
         ),

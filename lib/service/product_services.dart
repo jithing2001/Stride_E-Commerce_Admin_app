@@ -34,7 +34,7 @@ class ProductServices {
   }
 
   getProduct() {
-   final get= FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('myApp')
         .doc('Admin')
         .collection('products')

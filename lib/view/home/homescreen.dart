@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                 InkWell(
                     onTap: () async {
                       // await ProductServices().getuser();
-                      Get.to(Tabs());
+                      Get.to(const Tabs());
                     },
                     child: HomeListWidgets(title: 'All Orders'))
               ],

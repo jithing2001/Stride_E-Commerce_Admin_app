@@ -6,9 +6,9 @@ import 'package:ecommerce_admin/view/all_order/widgets/order_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ActiveOrder extends StatelessWidget {
+class ShippedOrder extends StatelessWidget {
   // final user;
-  const ActiveOrder({super.key});
+  const ShippedOrder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ActiveOrder extends StatelessWidget {
               .collection('users')
               .doc('myorder')
               .collection('allOrders')
-              .where('status', isEqualTo: 'active')
+              .where('status', isEqualTo: 'shipped')
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data == null ||
@@ -75,8 +75,8 @@ class ActiveOrder extends StatelessWidget {
                                   InkWell(
                                     onTap: () => Get.to(OrderTracker(
                                       data: snapshot.data!.docs[index],
-                                      status: 'shipped',
-                                      btnTxt: 'Shipped',
+                                      status: 'completed',
+                                      btnTxt: 'Delivered',
                                     )),
                                     child: const Text(
                                       'Track',
@@ -88,7 +88,7 @@ class ActiveOrder extends StatelessWidget {
                                 ],
                               ),
                               const Text(
-                                'Active',
+                                'Shipped',
                                 style: TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.bold),
                               )

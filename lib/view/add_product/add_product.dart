@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:ecommerce_admin/constants.dart';
-import 'package:ecommerce_admin/controller/edit_image_controller.dart';
 import 'package:ecommerce_admin/controller/image_controller.dart';
 import 'package:ecommerce_admin/model/categorymode.dart';
 import 'package:ecommerce_admin/model/product_model.dart';
@@ -42,7 +41,7 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
-    final ImageAddNotifier imageControllere = Get.put(ImageAddNotifier());
+    final ImageAddNotifier imageController = Get.put(ImageAddNotifier());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Product'),
@@ -92,7 +91,7 @@ class _AddProductState extends State<AddProduct> {
                               ),
                             ),
                     ),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: 100,
                       child: Row(
